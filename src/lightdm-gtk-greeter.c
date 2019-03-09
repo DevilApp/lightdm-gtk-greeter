@@ -83,6 +83,8 @@ static GtkEntry     *username_entry, *password_entry;
 static GtkLabel     *message_label;
 static GtkInfoBar   *info_bar;
 static GtkButton    *cancel_button, *login_button;
+static GtkLabel                     *login_button_label;
+static GtkImage                     *login_button_image;
 
 /* Panel */
 static GtkWidget    *panel_window, *menubar;
@@ -1945,9 +1947,15 @@ set_login_button_label (LightDMGreeter *ldm, const gchar *username)
     if (user)
         logged_in = lightdm_user_get_logged_in (user);
     if (logged_in)
-        gtk_button_set_label (login_button, _("Unlock"));
+    {
+        gtk_label_set_text (login_button_label, _("Unlock"));
+        gtk_image_set_from_icon_name (login_button_image,"changes-allow",GTK_ICON_SIZE_DIALOG);
+    }
     else
-        gtk_button_set_label (login_button, _("Log In"));
+    {
+        gtk_label_set_text (login_button_label, _("Log In"));
+        gtk_image_set_from_icon_name (login_button_image,"user-online",GTK_ICON_SIZE_DIALOG);
+    };
     /* and disable the session and language widgets */
     gtk_widget_set_sensitive (GTK_WIDGET (session_menuitem), !logged_in);
     gtk_widget_set_sensitive (GTK_WIDGET (language_menuitem), !logged_in);
@@ -2941,6 +2949,8 @@ main (int argc, char **argv)
     message_label = GTK_LABEL (gtk_builder_get_object (builder, "message_label"));
     cancel_button = GTK_BUTTON (gtk_builder_get_object (builder, "cancel_button"));
     login_button = GTK_BUTTON (gtk_builder_get_object (builder, "login_button"));
+    login_button_label = GTK_LABEL (gtk_builder_get_object (builder, "login_button_label"));
+    login_button_image = GTK_IMAGE (gtk_builder_get_object (builder, "login_button_image"));
 
     /* Panel window*/
     panel_window = GTK_WIDGET (gtk_builder_get_object (builder, "panel_window"));
