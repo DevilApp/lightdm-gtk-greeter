@@ -62,7 +62,7 @@ lightdm_gtk_greeter_LDADD = \
 	$(LIBXKLAVIER_LIBS)\
 	-lm
 
-if MAINTAINER_MODE
+#if MAINTAINER_MODE
 
 lightdm-gtk-greeter-ui.h: $(srcdir)/lightdm-gtk-greeter.glade Makefile
 	$(AM_V_GEN) exo-csource --static --strip-comments --strip-content --name=lightdm_gtk_greeter_ui $< >$@
@@ -79,7 +79,7 @@ DISTCLEANFILES = \
 BUILT_SOURCES = \
 	$(lightdm_gtk_greeter_built_sources)
 
-endif
+#endif
 
 EXTRA_DIST = \
 	lightdm-gtk-greeter.glade \
