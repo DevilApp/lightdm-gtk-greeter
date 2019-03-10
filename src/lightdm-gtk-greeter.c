@@ -778,6 +778,8 @@ set_message_label (LightDMMessageType type, const gchar *text)
         gtk_info_bar_set_message_type (info_bar, GTK_MESSAGE_INFO);
     else
         gtk_info_bar_set_message_type (info_bar, GTK_MESSAGE_ERROR);
+    if (type != LIGHTDM_MESSAGE_TYPE_ERROR)
+        gtk_style_context_remove_class (gtk_widget_get_style_context( GTK_WIDGET(password_entry)), "error");
     gtk_label_set_text (message_label, text);
     gtk_info_bar_set_revealed (info_bar, text && text[0]);
 }
@@ -2505,7 +2507,11 @@ authentication_complete_cb (LightDMGreeter *ldm)
         if (prompted)
         {
             if (!have_pam_error)
+            {
                 set_message_label (LIGHTDM_MESSAGE_TYPE_ERROR, _("Incorrect password, please try again"));
+                gtk_style_context_add_class (gtk_widget_get_style_context( GTK_WIDGET(password_entry)), "error");
+
+            };
             start_authentication (lightdm_greeter_get_authentication_user (ldm));
         }
         else
