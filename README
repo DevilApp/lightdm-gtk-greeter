@@ -1,1 +1,7 @@
-https://launchpad.net/lightdm-gtk-greeter
+This is a fork of the original lightdm-gtk-greeter (https://launchpad.net/lightdm-gtk-greeter)
+
+I make it for my personnal use but you may like it.
+
+Now it feat :
+ - Vertical visual layout
+ - Animations (in progress)
