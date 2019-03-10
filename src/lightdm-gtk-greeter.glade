@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.22.1 -->
 <interface>
-  <requires lib="gtk+" version="3.4"/>
+  <requires lib="gtk+" version="3.10"/>
   <requires lib="greeter_menu_bar" version="1.0"/>
   <object class="GtkAccelGroup" id="a11y_accelgroup"/>
   <object class="GtkAccelGroup" id="power_accelgroup"/>
@@ -376,6 +376,7 @@
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="margin_bottom">12</property>
                 <property name="orientation">vertical</property>
                 <property name="spacing">6</property>
                 <child>
@@ -429,14 +430,22 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="username_entry">
-                    <property name="name">prompt_entry</property>
-                    <property name="can_focus">True</property>
-                    <property name="hexpand">True</property>
-                    <property name="invisible_char">•</property>
-                    <property name="placeholder_text" translatable="yes">Enter your username</property>
-                    <signal name="focus-out-event" handler="username_focus_out_cb" swapped="no"/>
-                    <signal name="key-press-event" handler="username_key_press_cb" swapped="no"/>
+                  <object class="GtkRevealer" id="username_revealer">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="reveal_child">True</property>
+                    <child>
+                      <object class="GtkEntry" id="username_entry">
+                        <property name="name">prompt_entry</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="invisible_char">•</property>
+                        <property name="placeholder_text" translatable="yes">Enter your username</property>
+                        <signal name="focus-out-event" handler="username_focus_out_cb" swapped="no"/>
+                        <signal name="key-press-event" handler="username_key_press_cb" swapped="no"/>
+                      </object>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -445,20 +454,24 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="password_entry">
-                    <property name="name">prompt_entry</property>
-                    <property name="width_request">200</property>
+                  <object class="GtkRevealer" id="password_revealer">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="margin_bottom">12</property>
-                    <property name="hexpand">True</property>
-                    <property name="visibility">False</property>
-                    <property name="invisible_char">•</property>
-                    <property name="primary_icon_activatable">False</property>
-                    <property name="secondary_icon_activatable">False</property>
-                    <property name="placeholder_text" translatable="yes">Enter your password</property>
-                    <signal name="activate" handler="login_cb" swapped="no"/>
-                    <signal name="key-press-event" handler="password_key_press_cb" swapped="no"/>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkEntry" id="password_entry">
+                        <property name="name">prompt_entry</property>
+                        <property name="width_request">200</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="invisible_char">•</property>
+                        <property name="primary_icon_activatable">False</property>
+                        <property name="secondary_icon_activatable">False</property>
+                        <property name="placeholder_text" translatable="yes">Enter your password</property>
+                        <signal name="activate" handler="login_cb" swapped="no"/>
+                        <signal name="key-press-event" handler="password_key_press_cb" swapped="no"/>
+                      </object>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>

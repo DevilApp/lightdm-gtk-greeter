@@ -80,6 +80,7 @@ static GtkWidget    *login_window;
 static GtkImage     *user_image;
 static GtkComboBox  *user_combo;
 static GtkEntry     *username_entry, *password_entry;
+static GtkRevealer  *username_revealer, *password_revealer;
 static GtkLabel     *message_label;
 static GtkInfoBar   *info_bar;
 static GtkButton    *cancel_button, *login_button;
@@ -1202,13 +1203,13 @@ process_prompts (LightDMGreeter *ldm)
     if (!prompted && pending_questions && !pending_questions->next &&
         ((PAMConversationMessage *) pending_questions->data)->is_prompt &&
         ((PAMConversationMessage *) pending_questions->data)->type.prompt != LIGHTDM_PROMPT_TYPE_SECRET &&
-        gtk_widget_get_visible ((GTK_WIDGET (username_entry))) &&
+        gtk_revealer_get_child_revealed (username_revealer) &&
         lightdm_greeter_get_authentication_user (ldm) == NULL)
     {
         prompted = TRUE;
         prompt_active = TRUE;
         gtk_widget_grab_focus (GTK_WIDGET (username_entry));
-        gtk_widget_show (GTK_WIDGET (password_entry));
+        gtk_revealer_set_reveal_child (password_revealer,TRUE);
         return;
     }
 
@@ -1225,7 +1226,7 @@ process_prompts (LightDMGreeter *ldm)
             continue;
         }
 
-        gtk_widget_show (GTK_WIDGET (password_entry));
+        gtk_revealer_set_reveal_child (password_revealer,TRUE);
         gtk_widget_grab_focus (GTK_WIDGET (password_entry));
         gtk_entry_set_text (password_entry, "");
         gtk_entry_set_visibility (password_entry, message->type.prompt != LIGHTDM_PROMPT_TYPE_SECRET);
@@ -2019,7 +2020,7 @@ start_authentication (const gchar *username)
 
     if (g_strcmp0 (username, "*other") == 0)
     {
-        gtk_widget_show (GTK_WIDGET (username_entry));
+        gtk_revealer_set_reveal_child (username_revealer,TRUE);
         gtk_widget_show (GTK_WIDGET (cancel_button));
 #ifdef HAVE_LIBLIGHTDMGOBJECT_1_19_2
         lightdm_greeter_authenticate (greeter, NULL, NULL);
@@ -2101,7 +2102,7 @@ cancel_authentication (void)
     }
 
     /* Make sure password entry is back to normal */
-    gtk_entry_set_visibility (password_entry, FALSE);
+    gtk_revealer_set_reveal_child (password_revealer,FALSE);
 
     /* Force refreshing the prompt_box for "Other" */
     model = gtk_combo_box_get_model (user_combo);
@@ -2167,7 +2168,7 @@ password_key_press_cb (GtkWidget *widget, GdkEventKey *event, gpointer user_data
 
         /* Back to username_entry if it is available */
         if (event->keyval == GDK_KEY_Up &&
-            gtk_widget_get_visible (GTK_WIDGET (username_entry)) && widget == GTK_WIDGET (password_entry))
+            gtk_revealer_get_child_revealed (username_revealer) && widget == GTK_WIDGET (password_entry))
         {
             gtk_widget_grab_focus (GTK_WIDGET (username_entry));
             return TRUE;
@@ -2210,7 +2211,7 @@ username_key_press_cb (GtkWidget *widget, GdkEventKey *event, gpointer user_data
     if (event->keyval == GDK_KEY_Up)
         return password_key_press_cb (widget, event, user_data);
     /* Enter activates the password entry */
-    else if (event->keyval == GDK_KEY_Return && gtk_widget_get_visible (GTK_WIDGET (password_entry)))
+    else if (event->keyval == GDK_KEY_Return && gtk_revealer_get_child_revealed (password_revealer))
     {
         gtk_widget_grab_focus (GTK_WIDGET (password_entry));
         return TRUE;
@@ -2274,13 +2275,13 @@ set_displayed_user (LightDMGreeter *ldm, const gchar *username)
 
     if (g_strcmp0 (username, "*other") == 0)
     {
-        gtk_widget_show (GTK_WIDGET (username_entry));
+        gtk_revealer_set_reveal_child (username_revealer,TRUE);
         gtk_widget_show (GTK_WIDGET (cancel_button));
         user_tooltip = g_strdup (_("Other"));
     }
     else
     {
-        gtk_widget_hide (GTK_WIDGET (username_entry));
+        gtk_revealer_set_reveal_child (username_revealer,FALSE);
         gtk_widget_hide (GTK_WIDGET (cancel_button));
         user_tooltip = g_strdup (username);
     }
@@ -2294,7 +2295,7 @@ set_displayed_user (LightDMGreeter *ldm, const gchar *username)
     if (g_strcmp0 (username, "*guest") == 0)
     {
         user_tooltip = g_strdup (_("Guest Session"));
-        gtk_widget_hide (GTK_WIDGET (password_entry));
+        gtk_revealer_set_reveal_child (password_revealer,FALSE);
         gtk_widget_grab_focus (GTK_WIDGET (user_combo));
     }
 
@@ -2389,9 +2390,9 @@ user_combo_key_press_cb (GtkWidget *widget, GdkEventKey *event, gpointer user_da
 {
     if (event->keyval == GDK_KEY_Return)
     {
-        if (gtk_widget_get_visible (GTK_WIDGET (username_entry)))
+        if (gtk_revealer_get_child_revealed (username_revealer))
             gtk_widget_grab_focus (GTK_WIDGET (username_entry));
-        else if (gtk_widget_get_visible (GTK_WIDGET (password_entry)))
+        else if (gtk_revealer_get_child_revealed (password_revealer))
             gtk_widget_grab_focus (GTK_WIDGET (password_entry));
         else
             login_cb (GTK_WIDGET (login_button));
@@ -2493,7 +2494,7 @@ authentication_complete_cb (LightDMGreeter *ldm)
             start_session ();
         else
         {
-            gtk_widget_hide (GTK_WIDGET (password_entry));
+            gtk_revealer_set_reveal_child (password_revealer,FALSE);
             gtk_widget_grab_focus (GTK_WIDGET (user_combo));
         }
     }
@@ -2951,6 +2952,8 @@ main (int argc, char **argv)
     user_combo = GTK_COMBO_BOX (gtk_builder_get_object (builder, "user_combobox"));
     username_entry = GTK_ENTRY (gtk_builder_get_object (builder, "username_entry"));
     password_entry = GTK_ENTRY (gtk_builder_get_object (builder, "password_entry"));
+    username_revealer = GTK_REVEALER (gtk_builder_get_object (builder, "username_revealer"));
+    password_revealer = GTK_REVEALER (gtk_builder_get_object (builder, "password_revealer"));
     info_bar = GTK_INFO_BAR (gtk_builder_get_object (builder, "greeter_infobar"));
     message_label = GTK_LABEL (gtk_builder_get_object (builder, "message_label"));
     cancel_button = GTK_BUTTON (gtk_builder_get_object (builder, "cancel_button"));
