@@ -53,7 +53,6 @@
                 </child>
                 <child>
                   <object class="GtkMenuItem" id="shutdown_menuitem">
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="accel_path">&lt;Login&gt;/power/shutdown</property>
@@ -77,7 +76,6 @@
                 <property name="accel_group">a11y_accelgroup</property>
                 <child>
                   <object class="GtkCheckMenuItem" id="large_font_menuitem">
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="accel_path">&lt;Login&gt;/a11y/font</property>
@@ -87,7 +85,6 @@
                 </child>
                 <child>
                   <object class="GtkCheckMenuItem" id="high_contrast_menuitem">
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="accel_path">&lt;Login&gt;/a11y/contrast</property>
@@ -97,7 +94,6 @@
                 </child>
                 <child>
                   <object class="GtkCheckMenuItem" id="keyboard_menuitem">
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="accel_path">&lt;Login&gt;/a11y/keyboard</property>
@@ -108,7 +104,6 @@
                 </child>
                 <child>
                   <object class="GtkCheckMenuItem" id="reader_menuitem">
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="accel_path">&lt;Login&gt;/a11y/reader</property>
@@ -484,12 +479,11 @@
           </packing>
         </child>
         <child>
-          <placeholder/>
-        </child>
-        <child>
           <object class="GtkInfoBar" id="greeter_infobar">
             <property name="name">greeter_infobar</property>
+            <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="revealed">False</property>
             <child internal-child="action_area">
               <object class="GtkButtonBox" id="infobar-action_area">
                 <property name="can_focus">False</property>

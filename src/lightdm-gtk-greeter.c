@@ -364,7 +364,7 @@ greeter_restore_focus(const gpointer saved_data)
 static void
 infobar_revealed_cb_710888 (GObject *gobject, GParamSpec *pspec, gpointer user_data)
 {
-    gtk_widget_set_visible (GTK_WIDGET (info_bar), !message_label_is_empty ());
+    gtk_info_bar_set_revealed (info_bar, !message_label_is_empty ());
 }
 
 /* Terminating */
@@ -779,7 +779,7 @@ set_message_label (LightDMMessageType type, const gchar *text)
     else
         gtk_info_bar_set_message_type (info_bar, GTK_MESSAGE_ERROR);
     gtk_label_set_text (message_label, text);
-    gtk_widget_set_visible (GTK_WIDGET (info_bar), text && text[0]);
+    gtk_info_bar_set_revealed (info_bar, text && text[0]);
 }
 
 /* User image */
