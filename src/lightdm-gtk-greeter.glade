@@ -389,12 +389,37 @@
                     <property name="label_xalign">0</property>
                     <property name="shadow_type">none</property>
                     <child>
-                      <object class="GtkImage" id="user_image">
-                        <property name="name">user_image</property>
+                      <object class="GtkStack" id="user_image_stack">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="pixel_size">80</property>
-                        <property name="icon_name">avatar-default</property>
+                        <property name="transition_type">crossfade</property>
+                        <child>
+                          <object class="GtkImage" id="user_image1">
+                            <property name="name">user_image</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="pixel_size">80</property>
+                            <property name="icon_name">avatar-default</property>
+                          </object>
+                          <packing>
+                            <property name="name">page0</property>
+                            <property name="title" translatable="yes">page0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="user_image2">
+                            <property name="name">user_image</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="pixel_size">80</property>
+                            <property name="icon_name">avatar-default</property>
+                          </object>
+                          <packing>
+                            <property name="name">page1</property>
+                            <property name="title" translatable="yes">page1</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
                       </object>
                     </child>
                   </object>

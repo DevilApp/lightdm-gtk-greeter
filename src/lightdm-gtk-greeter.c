@@ -77,7 +77,8 @@ static GtkWidget    *screen_overlay_child;
 
 /* Login window */
 static GtkWidget    *login_window;
-static GtkImage     *user_image;
+static GtkImage     *user_image1, *user_image2;
+static GtkStack     *user_image_stack;
 static GtkComboBox  *user_combo;
 static GtkEntry     *username_entry, *password_entry;
 static GtkRevealer  *username_revealer, *password_revealer;
@@ -790,13 +791,18 @@ set_message_label (LightDMMessageType type, const gchar *text)
 static void
 set_user_image (const gchar *username)
 {
+    // To animate user_image switching I use 2 user_image inside a animated stack.
     const gchar *path;
     LightDMUser *user = NULL;
     GdkPixbuf *image = NULL;
     GError *error = NULL;
+    static enum {USER_IMAGE1,USER_IMAGE2} current_image = USER_IMAGE1;
 
-    if (!gtk_widget_get_visible (GTK_WIDGET (user_image)))
+    if (!gtk_widget_get_visible (GTK_WIDGET (user_image1)))
         return;
+    
+    GtkImage *user_image = current_image ? user_image2 : user_image1;
+    current_image = !current_image;
 
     if (username)
         user = lightdm_user_list_get_user_by_name (lightdm_user_list_get_instance (), username);
@@ -810,6 +816,7 @@ set_user_image (const gchar *username)
             if (image)
             {
                 gtk_image_set_from_pixbuf (GTK_IMAGE (user_image), image);
+                gtk_stack_set_visible_child (user_image_stack, GTK_WIDGET (user_image));
                 g_object_unref (image);
                 return;
             }
@@ -2948,7 +2955,9 @@ main (int argc, char **argv)
 
     /* Login window */
     login_window = GTK_WIDGET (gtk_builder_get_object (builder, "login_window"));
-    user_image = GTK_IMAGE (gtk_builder_get_object (builder, "user_image"));
+    user_image1 = GTK_IMAGE (gtk_builder_get_object (builder, "user_image1"));
+    user_image2 = GTK_IMAGE (gtk_builder_get_object (builder, "user_image2"));
+    user_image_stack = GTK_STACK (gtk_builder_get_object (builder, "user_image_stack"));
     user_combo = GTK_COMBO_BOX (gtk_builder_get_object (builder, "user_combobox"));
     username_entry = GTK_ENTRY (gtk_builder_get_object (builder, "username_entry"));
     password_entry = GTK_ENTRY (gtk_builder_get_object (builder, "password_entry"));
@@ -3020,7 +3029,8 @@ main (int argc, char **argv)
     if (config_get_bool (NULL, CONFIG_KEY_HIDE_USER_IMAGE, FALSE))
     {
         gtk_widget_hide (GTK_WIDGET (gtk_builder_get_object (builder, "user_image_border")));
-        gtk_widget_hide (GTK_WIDGET (user_image));  /* Hide to mark image is disabled */
+        gtk_widget_hide (GTK_WIDGET (user_image1));  /* Hide to mark image is disabled */
+        gtk_widget_hide (GTK_WIDGET (user_image2));  /* Hide to mark image is disabled */
         gtk_widget_set_size_request (GTK_WIDGET (user_combo), 250, -1);
     }
     else
