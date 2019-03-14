@@ -803,7 +803,7 @@ set_user_image (const gchar *username)
     
     GtkImage *user_image = current_image ? user_image2 : user_image1;
     current_image = !current_image;
-
+    gtk_stack_set_visible_child (user_image_stack, GTK_WIDGET (user_image));
     if (username)
         user = lightdm_user_list_get_user_by_name (lightdm_user_list_get_instance (), username);
 
@@ -816,7 +816,6 @@ set_user_image (const gchar *username)
             if (image)
             {
                 gtk_image_set_from_pixbuf (GTK_IMAGE (user_image), image);
-                gtk_stack_set_visible_child (user_image_stack, GTK_WIDGET (user_image));
                 g_object_unref (image);
                 return;
             }
