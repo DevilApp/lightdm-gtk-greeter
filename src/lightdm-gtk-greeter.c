@@ -2859,6 +2859,9 @@ main (int argc, char **argv)
     }
 
     /* Set GTK+ settings */
+    g_debug ("[Configuration] %s GTK+ animations", config_get_bool (NULL, CONFIG_KEY_ANIMATIONS, TRUE) ? "Enabling" : "Disabling");
+    g_object_set (gtk_settings_get_default (), "gtk-enable-animations", config_get_bool (NULL, CONFIG_KEY_ANIMATIONS, TRUE), NULL);
+
     value = config_get_string (NULL, CONFIG_KEY_THEME, NULL);
     if (value)
     {
