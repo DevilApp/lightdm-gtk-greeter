@@ -114,6 +114,17 @@ static gboolean show_power_prompt (const gchar *action, const gchar* icon, const
 void power_button_clicked_cb (GtkButton *button, gpointer user_data);
 gboolean power_window_key_press_event_cb (GtkWidget *widget, GdkEventKey *event, gpointer user_data);
 
+gboolean delay_reveal_callback(GtkRevealer *widget)
+{
+	gtk_revealer_set_reveal_child(widget,TRUE);
+	return G_SOURCE_REMOVE;
+};
+
+void delay_reveal(GtkRevealer *widget)
+{
+	g_timeout_add_seconds(1,G_SOURCE_FUNC(delay_reveal_callback),widget);
+}
+
 /* Handling window position */
 typedef struct
 {
@@ -3333,7 +3344,7 @@ main (int argc, char **argv)
     gdk_window_add_filter (root_window, wm_window_filter, NULL);
 
     gtk_widget_show (GTK_WIDGET (screen_overlay));
-    gtk_revealer_set_reveal_child (GTK_WIDGET (login_revealer),TRUE);
+    delay_reveal (login_revealer);
 
     g_debug ("Run Gtk loop...");
     gtk_main ();
