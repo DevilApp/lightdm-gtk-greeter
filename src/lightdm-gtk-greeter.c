@@ -77,6 +77,7 @@ static GtkWidget    *screen_overlay_child;
 
 /* Login window */
 static GtkWidget    *login_window;
+static GtkRevealer  *login_revealer;
 static GtkImage     *user_image1, *user_image2;
 static GtkStack     *user_image_stack;
 static GtkComboBox  *user_combo;
@@ -559,7 +560,7 @@ show_power_prompt (const gchar *action, const gchar* icon, const gchar* title, c
     gtk_widget_set_sensitive (power_menuitem, FALSE);
     gtk_widget_set_sensitive (session_menuitem, FALSE);
     gtk_widget_set_sensitive (language_menuitem, FALSE);
-    gtk_widget_hide (login_window);
+    gtk_revealer_set_reveal_child (login_revealer, FALSE);
     gtk_widget_show (power_window);
     gtk_widget_grab_focus (GTK_WIDGET (power_ok_button));
 
@@ -568,7 +569,7 @@ show_power_prompt (const gchar *action, const gchar* icon, const gchar* title, c
     g_main_loop_unref (loop);
 
     gtk_widget_hide (power_window);
-    gtk_widget_show (login_window);
+    gtk_revealer_set_reveal_child (login_revealer, TRUE);
     gtk_widget_set_sensitive (power_menuitem, TRUE);
     gtk_widget_set_sensitive (session_menuitem, session_enabled);
     gtk_widget_set_sensitive (language_menuitem, language_enabled);
@@ -2957,6 +2958,7 @@ main (int argc, char **argv)
 
     /* Login window */
     login_window = GTK_WIDGET (gtk_builder_get_object (builder, "login_window"));
+    login_revealer = GTK_REVEALER (gtk_builder_get_object (builder, "login_revealer"));
     user_image1 = GTK_IMAGE (gtk_builder_get_object (builder, "user_image1"));
     user_image2 = GTK_IMAGE (gtk_builder_get_object (builder, "user_image2"));
     user_image_stack = GTK_STACK (gtk_builder_get_object (builder, "user_image_stack"));
@@ -2998,7 +3000,7 @@ main (int argc, char **argv)
     power_text = GTK_LABEL (gtk_builder_get_object (builder, "power_text"));
     power_icon = GTK_IMAGE (gtk_builder_get_object (builder, "power_icon"));
 
-    gtk_overlay_add_overlay (screen_overlay, login_window);
+    gtk_overlay_add_overlay (screen_overlay, login_revealer);
     gtk_overlay_add_overlay (screen_overlay, panel_window);
     gtk_overlay_add_overlay (screen_overlay, power_window);
 
@@ -3270,7 +3272,7 @@ main (int argc, char **argv)
 
     /* Windows positions */
     value = config_get_string (NULL, CONFIG_KEY_POSITION, NULL);
-    g_object_set_data_full (G_OBJECT (login_window), WINDOW_DATA_POSITION, str_to_position (value, &WINDOW_POS_CENTER), g_free);
+    g_object_set_data_full (G_OBJECT (login_revealer), WINDOW_DATA_POSITION, str_to_position (value, &WINDOW_POS_CENTER), g_free);
     g_free (value);
 
 
@@ -3331,6 +3333,7 @@ main (int argc, char **argv)
     gdk_window_add_filter (root_window, wm_window_filter, NULL);
 
     gtk_widget_show (GTK_WIDGET (screen_overlay));
+    gtk_revealer_set_reveal_child (GTK_WIDGET (login_revealer),TRUE);
 
     g_debug ("Run Gtk loop...");
     gtk_main ();
