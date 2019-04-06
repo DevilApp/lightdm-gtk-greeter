@@ -3011,7 +3011,7 @@ main (int argc, char **argv)
     power_text = GTK_LABEL (gtk_builder_get_object (builder, "power_text"));
     power_icon = GTK_IMAGE (gtk_builder_get_object (builder, "power_icon"));
 
-    gtk_overlay_add_overlay (screen_overlay, login_revealer);
+    gtk_overlay_add_overlay (screen_overlay, GTK_WIDGET(login_revealer));
     gtk_overlay_add_overlay (screen_overlay, panel_window);
     gtk_overlay_add_overlay (screen_overlay, power_window);
 
