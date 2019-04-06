@@ -122,7 +122,7 @@ gboolean delay_reveal_callback(GtkRevealer *widget)
 
 void delay_reveal(GtkRevealer *widget)
 {
-	g_timeout_add_seconds(1,G_SOURCE_FUNC(delay_reveal_callback),widget);
+	g_timeout_add(500,G_SOURCE_FUNC(delay_reveal_callback),widget);
 }
 
 /* Handling window position */
