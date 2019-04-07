@@ -90,6 +90,7 @@ static GtkLabel                     *login_button_label;
 static GtkImage                     *login_button_image;
 
 /* Panel */
+static GtkRevealer  *panel_revealer;
 static GtkWidget    *panel_window, *menubar;
 static GtkWidget    *power_menuitem, *session_menuitem, *language_menuitem, *a11y_menuitem,
                     *layout_menuitem, *clock_menuitem, *host_menuitem;
@@ -2986,6 +2987,7 @@ main (int argc, char **argv)
     login_button_image = GTK_IMAGE (gtk_builder_get_object (builder, "login_button_image"));
 
     /* Panel window*/
+    panel_revealer = GTK_REVEALER (gtk_builder_get_object (builder, "panel_revealer"));
     panel_window = GTK_WIDGET (gtk_builder_get_object (builder, "panel_window"));
     menubar = GTK_WIDGET (gtk_builder_get_object (builder, "menubar"));
     session_menuitem = GTK_WIDGET (gtk_builder_get_object (builder, "session_menuitem"));
@@ -3012,7 +3014,7 @@ main (int argc, char **argv)
     power_icon = GTK_IMAGE (gtk_builder_get_object (builder, "power_icon"));
 
     gtk_overlay_add_overlay (screen_overlay, GTK_WIDGET(login_revealer));
-    gtk_overlay_add_overlay (screen_overlay, panel_window);
+    gtk_overlay_add_overlay (screen_overlay, GTK_WIDGET(panel_revealer));
     gtk_overlay_add_overlay (screen_overlay, power_window);
 
     gtk_accel_map_add_entry ("<Login>/a11y/font", GDK_KEY_F1, 0);
@@ -3287,7 +3289,7 @@ main (int argc, char **argv)
     g_free (value);
 
 
-    gtk_widget_set_valign (panel_window, config_get_enum (NULL, CONFIG_KEY_PANEL_POSITION, GTK_ALIGN_START,
+    gtk_widget_set_valign (GTK_WIDGET (panel_revealer), config_get_enum (NULL, CONFIG_KEY_PANEL_POSITION, GTK_ALIGN_START,
                                                           "bottom", GTK_ALIGN_END,
                                                           "top", GTK_ALIGN_START, NULL));
 
@@ -3345,6 +3347,7 @@ main (int argc, char **argv)
 
     gtk_widget_show (GTK_WIDGET (screen_overlay));
     delay_reveal (login_revealer);
+    delay_reveal (panel_revealer);
 
     g_debug ("Run Gtk loop...");
     gtk_main ();
