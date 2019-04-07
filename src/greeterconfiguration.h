@@ -19,6 +19,7 @@
 #define CONFIG_KEY_DEBUGGING            "allow-debugging"
 #define CONFIG_KEY_SCREENSAVER_TIMEOUT  "screensaver-timeout"
 #define CONFIG_KEY_ANIMATIONS           "animations"
+#define CONFIG_KEY_DELAY_REVEAL         "delay-reveal"
 #define CONFIG_KEY_THEME                "theme-name"
 #define CONFIG_KEY_ICON_THEME           "icon-theme-name"
 #define CONFIG_KEY_CURSOR_THEME         "cursor-theme-name"

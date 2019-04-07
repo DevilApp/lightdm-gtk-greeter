@@ -123,7 +123,15 @@ gboolean delay_reveal_callback(GtkRevealer *widget)
 
 void delay_reveal(GtkRevealer *widget)
 {
-	g_timeout_add(500,G_SOURCE_FUNC(delay_reveal_callback),widget);
+	static delay = 0;
+	if (delay==0) {
+		delay = config_get_int (NULL, CONFIG_KEY_DELAY_REVEAL, 
+		 config_get_bool (NULL, CONFIG_KEY_ANIMATIONS, TRUE) ? 500 : 1);
+		if (delay<1) delay = 1;
+		if (delay>10000) delay = 10000; // Protect from configuration errors
+	}
+	g_timeout_add(config_get_int (NULL, CONFIG_KEY_DELAY_REVEAL, 
+	 config_get_bool (NULL, CONFIG_KEY_ANIMATIONS, TRUE) ? 500 : 1),G_SOURCE_FUNC(delay_reveal_callback),widget);
 }
 
 /* Handling window position */
