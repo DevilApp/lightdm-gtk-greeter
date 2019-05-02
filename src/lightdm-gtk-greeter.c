@@ -78,6 +78,8 @@ static GtkWidget    *screen_overlay_child;
 /* Login window */
 static GtkWidget    *login_window;
 static GtkRevealer  *login_revealer;
+static GtkWidget    *login_box;
+static GtkStack     *login_stack;
 static GtkImage     *user_image1, *user_image2;
 static GtkStack     *user_image_stack;
 static GtkComboBox  *user_combo;
@@ -583,16 +585,13 @@ show_power_prompt (const gchar *action, const gchar* icon, const gchar* title, c
     gtk_widget_set_sensitive (power_menuitem, FALSE);
     gtk_widget_set_sensitive (session_menuitem, FALSE);
     gtk_widget_set_sensitive (language_menuitem, FALSE);
-    gtk_revealer_set_reveal_child (login_revealer, FALSE);
-    gtk_widget_show (power_window);
-    gtk_widget_grab_focus (GTK_WIDGET (power_ok_button));
+    gtk_stack_set_visible_child (login_stack, GTK_WIDGET (power_window));
 
     g_main_loop_run (loop);
     response = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (power_window), POWER_WINDOW_DATA_RESPONSE));
     g_main_loop_unref (loop);
 
-    gtk_widget_hide (power_window);
-    gtk_revealer_set_reveal_child (login_revealer, TRUE);
+    gtk_stack_set_visible_child (login_stack, login_box);
     gtk_widget_set_sensitive (power_menuitem, TRUE);
     gtk_widget_set_sensitive (session_menuitem, session_enabled);
     gtk_widget_set_sensitive (language_menuitem, language_enabled);
@@ -2982,6 +2981,8 @@ main (int argc, char **argv)
     /* Login window */
     login_window = GTK_WIDGET (gtk_builder_get_object (builder, "login_window"));
     login_revealer = GTK_REVEALER (gtk_builder_get_object (builder, "login_revealer"));
+    login_box = GTK_WIDGET (gtk_builder_get_object (builder, "login_box"));
+    login_stack = GTK_STACK (gtk_builder_get_object (builder, "login_stack"));
     user_image1 = GTK_IMAGE (gtk_builder_get_object (builder, "user_image1"));
     user_image2 = GTK_IMAGE (gtk_builder_get_object (builder, "user_image2"));
     user_image_stack = GTK_STACK (gtk_builder_get_object (builder, "user_image_stack"));
@@ -3026,7 +3027,6 @@ main (int argc, char **argv)
 
     gtk_overlay_add_overlay (screen_overlay, GTK_WIDGET(login_revealer));
     gtk_overlay_add_overlay (screen_overlay, GTK_WIDGET(panel_revealer));
-    gtk_overlay_add_overlay (screen_overlay, power_window);
 
     gtk_accel_map_add_entry ("<Login>/a11y/font", GDK_KEY_F1, 0);
     gtk_accel_map_add_entry ("<Login>/a11y/contrast", GDK_KEY_F2, 0);
