@@ -123,7 +123,7 @@ gboolean delay_reveal_callback(GtkRevealer *widget)
 
 void delay_reveal(GtkRevealer *widget)
 {
-	static delay = 0;
+	static int delay = 0;
 	if (delay==0) {
 		delay = config_get_int (NULL, CONFIG_KEY_DELAY_REVEAL, 
 		 config_get_bool (NULL, CONFIG_KEY_ANIMATIONS, TRUE) ? 500 : 1);
