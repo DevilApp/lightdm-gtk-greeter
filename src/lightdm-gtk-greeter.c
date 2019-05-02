@@ -553,6 +553,9 @@ show_power_prompt (const gchar *action, const gchar* icon, const gchar* title, c
                                           logged_in_users);
         message = new_message = g_markup_printf_escaped ("<b>%s</b>\n%s", warning, message);
         g_free (warning);
+        
+        gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (power_ok_button)),
+         "destructive-action");
     }
 
     dialog_name = g_strconcat (action, "_dialog", NULL);
