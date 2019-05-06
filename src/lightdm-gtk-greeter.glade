@@ -4,6 +4,206 @@
   <requires lib="gtk+" version="3.10"/>
   <requires lib="greeter_menu_bar" version="1.0"/>
   <object class="GtkAccelGroup" id="a11y_accelgroup"/>
+  <object class="GtkAccelGroup" id="power_accelgroup"/>
+  <object class="GtkRevealer" id="panel_revealer">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="transition_duration">500</property>
+    <child>
+      <object class="GtkEventBox" id="panel_window">
+        <property name="name">panel_window</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="valign">start</property>
+        <child>
+          <object class="GreeterMenuBar" id="menubar">
+            <property name="name">menubar</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pack_direction">rtl</property>
+            <signal name="key-press-event" handler="menubar_key_press_cb" swapped="no"/>
+            <child>
+              <object class="GtkMenuItem" id="power_menuitem">
+                <property name="name">power_menuitem</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="power_menu">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="accel_group">power_accelgroup</property>
+                    <child>
+                      <object class="GtkMenuItem" id="suspend_menuitem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <signal name="activate" handler="suspend_cb" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="hibernate_menuitem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <signal name="activate" handler="hibernate_cb" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="restart_menuitem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <signal name="activate" handler="restart_cb" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="shutdown_menuitem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Login&gt;/power/shutdown</property>
+                        <signal name="activate" handler="shutdown_cb" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="a11y_menuitem">
+                <property name="name">a11y_menuitem</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="a11y_menu">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="accel_group">a11y_accelgroup</property>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="large_font_menuitem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Login&gt;/a11y/font</property>
+                        <signal name="toggled" handler="a11y_font_cb" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="high_contrast_menuitem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Login&gt;/a11y/contrast</property>
+                        <signal name="toggled" handler="a11y_contrast_cb" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="keyboard_menuitem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Login&gt;/a11y/keyboard</property>
+                        <signal name="toggled" handler="a11y_keyboard_cb" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="reader_menuitem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="accel_path">&lt;Login&gt;/a11y/reader</property>
+                        <signal name="toggled" handler="a11y_reader_cb" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="language_menuitem">
+                <property name="name">language_menuitem</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="language_menu">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="session_menuitem">
+                <property name="name">session_menuitem</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="session_menu">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="layout_menuitem">
+                <property name="name">layout_menuitem</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="layout_menu">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSeparatorMenuItem" id="clock_menuitem">
+                <property name="name">clock_menuitem</property>
+                <property name="can_focus">False</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSeparatorMenuItem" id="host_menuitem">
+                <property name="name">host_menuitem</property>
+                <property name="can_focus">False</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <style>
+          <class name="background"/>
+          <class name="osd"/>
+        </style>
+      </object>
+    </child>
+  </object>
+  <object class="GtkOverlay" id="screen_overlay">
+    <property name="name">screen</property>
+    <property name="can_focus">False</property>
+    <property name="hexpand">True</property>
+    <property name="vexpand">True</property>
+    <signal name="get-child-position" handler="screen_overlay_get_child_position_cb" swapped="no"/>
+    <child>
+      <object class="GtkEventBox" id="screen_overlay_child">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="visible_window">False</property>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+      <packing>
+        <property name="index">-1</property>
+      </packing>
+    </child>
+    <style>
+      <class name="lightdm-gtk-greeter"/>
+    </style>
+  </object>
+  <object class="GtkListStore" id="user_liststore">
+    <columns>
+      <!-- column-name username -->
+      <column type="gchararray"/>
+      <!-- column-name label -->
+      <column type="gchararray"/>
+      <!-- column-name weight -->
+      <column type="gint"/>
+    </columns>
+  </object>
   <object class="GtkRevealer" id="login_revealer">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -475,6 +675,9 @@
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <signal name="clicked" handler="power_button_clicked_cb" swapped="no"/>
+                                <style>
+                                  <class name="destructive-action"/>
+                                </style>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -512,205 +715,5 @@
         </style>
       </object>
     </child>
-  </object>
-  <object class="GtkAccelGroup" id="power_accelgroup"/>
-  <object class="GtkRevealer" id="panel_revealer">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="transition_duration">500</property>
-    <child>
-      <object class="GtkEventBox" id="panel_window">
-        <property name="name">panel_window</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="valign">start</property>
-        <child>
-          <object class="GreeterMenuBar" id="menubar">
-            <property name="name">menubar</property>
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="pack_direction">rtl</property>
-            <signal name="key-press-event" handler="menubar_key_press_cb" swapped="no"/>
-            <child>
-              <object class="GtkMenuItem" id="power_menuitem">
-                <property name="name">power_menuitem</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="power_menu">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="accel_group">power_accelgroup</property>
-                    <child>
-                      <object class="GtkMenuItem" id="suspend_menuitem">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <signal name="activate" handler="suspend_cb" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkMenuItem" id="hibernate_menuitem">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <signal name="activate" handler="hibernate_cb" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkMenuItem" id="restart_menuitem">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <signal name="activate" handler="restart_cb" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkMenuItem" id="shutdown_menuitem">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="accel_path">&lt;Login&gt;/power/shutdown</property>
-                        <signal name="activate" handler="shutdown_cb" swapped="no"/>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="a11y_menuitem">
-                <property name="name">a11y_menuitem</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="a11y_menu">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="accel_group">a11y_accelgroup</property>
-                    <child>
-                      <object class="GtkCheckMenuItem" id="large_font_menuitem">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="accel_path">&lt;Login&gt;/a11y/font</property>
-                        <signal name="toggled" handler="a11y_font_cb" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkCheckMenuItem" id="high_contrast_menuitem">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="accel_path">&lt;Login&gt;/a11y/contrast</property>
-                        <signal name="toggled" handler="a11y_contrast_cb" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkCheckMenuItem" id="keyboard_menuitem">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="accel_path">&lt;Login&gt;/a11y/keyboard</property>
-                        <signal name="toggled" handler="a11y_keyboard_cb" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkCheckMenuItem" id="reader_menuitem">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="accel_path">&lt;Login&gt;/a11y/reader</property>
-                        <signal name="toggled" handler="a11y_reader_cb" swapped="no"/>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="language_menuitem">
-                <property name="name">language_menuitem</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="language_menu">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="session_menuitem">
-                <property name="name">session_menuitem</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="session_menu">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="layout_menuitem">
-                <property name="name">layout_menuitem</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="layout_menu">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkSeparatorMenuItem" id="clock_menuitem">
-                <property name="name">clock_menuitem</property>
-                <property name="can_focus">False</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkSeparatorMenuItem" id="host_menuitem">
-                <property name="name">host_menuitem</property>
-                <property name="can_focus">False</property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <style>
-          <class name="background"/>
-          <class name="osd"/>
-        </style>
-      </object>
-    </child>
-  </object>
-  <object class="GtkOverlay" id="screen_overlay">
-    <property name="name">screen</property>
-    <property name="can_focus">False</property>
-    <property name="hexpand">True</property>
-    <property name="vexpand">True</property>
-    <signal name="get-child-position" handler="screen_overlay_get_child_position_cb" swapped="no"/>
-    <child>
-      <object class="GtkEventBox" id="screen_overlay_child">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="visible_window">False</property>
-        <child>
-          <placeholder/>
-        </child>
-      </object>
-      <packing>
-        <property name="index">-1</property>
-      </packing>
-    </child>
-    <style>
-      <class name="lightdm-gtk-greeter"/>
-    </style>
-  </object>
-  <object class="GtkListStore" id="user_liststore">
-    <columns>
-      <!-- column-name username -->
-      <column type="gchararray"/>
-      <!-- column-name label -->
-      <column type="gchararray"/>
-      <!-- column-name weight -->
-      <column type="gint"/>
-    </columns>
   </object>
 </interface>
